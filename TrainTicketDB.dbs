@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="train ticket database.sql" id="Project-2202" database="MySql" >
+	<schema name="public" >
+		<table name="Customers" spec="" >
+			<column name="id" type="INT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="firstName" type="CHAR" length="15" jt="1" mandatory="y" />
+			<column name="lastName" type="CHAR" length="25" jt="1" mandatory="y" />
+			<column name="dateOfBirth" type="DATE" jt="91" mandatory="y" />
+			<column name="email" type="CHAR" length="55" jt="1" mandatory="y" />
+			<column name="railwayCardNumberID" type="INT" jt="4" />
+			<index name="pk_customers" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_customers_email" unique="UNIQUE_KEY" >
+				<column name="email" />
+			</index>
+			<index name="unq_customers_railwaycardnumberid" unique="UNIQUE_KEY" >
+				<column name="railwayCardNumberID" />
+			</index>
+			<fk name="fk_Customers railwayCards" to_schema="public" to_table="railwayCards" options="" >
+				<fk_column name="railwayCardNumberID" pk="id" />
+			</fk>
+		</table>
+		<table name="Locations" spec="" >
+			<column name="id" type="TINYINT" jt="-6" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="locationName" type="CHAR" length="55" jt="1" mandatory="y" />
+			<column name="latitude" type="DECIMAL" length="8" decimal="6" jt="3" mandatory="y" />
+			<column name="longitudes" type="DECIMAL" length="9" decimal="6" jt="3" mandatory="y" />
+			<index name="pk_locations" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="PaymentMethod" spec="" >
+			<column name="id" type="TINYINT" jt="-6" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="method" type="CHAR" length="4" jt="1" mandatory="y" />
+			<column name="priceChange" type="FLOAT" jt="7" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<index name="pk_paymentmethod" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="Staff" spec="" >
+			<column name="id" type="INT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="firstName" type="CHAR" length="15" jt="1" mandatory="y" />
+			<column name="lastName" type="CHAR" length="25" jt="1" mandatory="y" />
+			<column name="dateOfBirth" type="DATE" jt="91" mandatory="y" />
+			<column name="email" type="CHAR" length="55" jt="1" mandatory="y" />
+			<column name="contactNum" type="INT" jt="4" mandatory="y" />
+			<column name="position" type="CHAR" length="30" jt="1" mandatory="y" />
+			<column name="salary" type="FLOAT" jt="7" mandatory="y" />
+			<column name="hired" type="DATE" jt="91" mandatory="y" />
+			<column name="stillWorking" type="BOOLEAN" jt="16" >
+				<defo><![CDATA[true]]></defo>
+			</column>
+			<index name="pk_staff" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_staff_email" unique="UNIQUE_KEY" >
+				<column name="email" />
+			</index>
+			<index name="unq_staff_contactnum" unique="UNIQUE_KEY" >
+				<column name="contactNum" />
+			</index>
+		</table>
+		<table name="Train" spec="" >
+			<column name="id" type="TINYINT" jt="-6" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="trainName" type="CHAR" length="6" jt="1" />
+			<column name="numOfWagon" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="numOfSeats" type="MEDIUMINT" jt="4" mandatory="y" />
+			<column name="fuelCapacity" type="INT" jt="4" mandatory="y" />
+			<column name="modelInfo" type="TEXT" jt="-1" mandatory="y" />
+			<column name="trouble" type="TEXT" jt="-1" mandatory="y" />
+			<column name="train_ready" type="BOOLEAN" jt="16" >
+				<defo><![CDATA[false]]></defo>
+			</column>
+			<column name="addedToRailway" type="DATE" jt="91" mandatory="y" />
+			<column name="modifiedAt" type="DATE" jt="91" />
+			<index name="pk_train" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_train_trainname" unique="UNIQUE_KEY" >
+				<column name="trainName" />
+			</index>
+		</table>
+		<table name="TrainSchedule" spec="" >
+			<column name="id" type="TINYINT" jt="-6" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="scheduleName" type="CHAR" length="50" jt="1" />
+			<column name="trainID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="woorksOnNonWorkingDays" type="BOOLEAN" jt="16" >
+				<defo><![CDATA[false]]></defo>
+			</column>
+			<column name="addedAt" type="DATE" jt="91" mandatory="y" />
+			<column name="modifiedAt" type="DATE" jt="91" />
+			<index name="pk_trainschedule" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_trainschedule_schedulename" unique="UNIQUE_KEY" >
+				<column name="scheduleName" />
+			</index>
+			<fk name="fk_TrainSchedule Train" to_schema="public" to_table="Train" options="" >
+				<fk_column name="trainID" pk="id" />
+			</fk>
+		</table>
+		<table name="TrainScheduleLocations" spec="" >
+			<column name="id" type="MEDIUMINT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="trainScheduleID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="departureTime" type="TIME" jt="92" mandatory="y" />
+			<column name="departureLocationID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="duration" type="INT" jt="4" mandatory="y" />
+			<column name="arrivalLocationID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="distance" type="FLOAT" jt="7" mandatory="y" />
+			<column name="nextLocation" type="CHAR" length="55" jt="1" />
+			<index name="pk_trainschedulelocations" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_TrainScheduleLocations TrainSchedule" to_schema="public" to_table="TrainSchedule" options="" >
+				<fk_column name="trainScheduleID" pk="id" />
+			</fk>
+			<fk name="fk_TrainScheduleLocations Locations" to_schema="public" to_table="Locations" options="" >
+				<fk_column name="departureLocationID" pk="id" />
+			</fk>
+			<fk name="fk_TrainScheduleLocations Locations_001" to_schema="public" to_table="Locations" options="" >
+				<fk_column name="arrivalLocationID" pk="id" />
+			</fk>
+		</table>
+		<table name="TrainScheduleWagonStaff" spec="" >
+			<column name="id" type="INT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="trainScheduleID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="wagonNum" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="staffID" type="INT" jt="4" mandatory="y" />
+			<index name="pk_trainschedulewagonstaff" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_TrainScheduleWagonStaff TrainSchedule" to_schema="public" to_table="TrainSchedule" options="" >
+				<fk_column name="trainScheduleID" pk="id" />
+			</fk>
+			<fk name="fk_TrainScheduleWagonStaff Staff" to_schema="public" to_table="Staff" options="" >
+				<fk_column name="staffID" pk="id" />
+			</fk>
+		</table>
+		<table name="TrainSeatReservation" spec="" >
+			<column name="id" type="MEDIUMINT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="trainScheduleID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="seatTypeID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="WagonNumber" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="rowNumber" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="seatNumber" type="CHAR" length="1" jt="1" mandatory="y" />
+			<column name="price" type="FLOAT" jt="7" mandatory="y" />
+			<column name="addedAt" type="DATE" jt="91" mandatory="y" />
+			<column name="modifiedAt" type="DATE" jt="91" />
+			<index name="pk_trainseatreservation" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_TrainSeatReservation TrainSchedule" to_schema="public" to_table="TrainSchedule" options="" >
+				<fk_column name="trainScheduleID" pk="id" />
+			</fk>
+			<fk name="fk_TrainSeatReservation TrainSeatTypes" to_schema="public" to_table="TrainSeatTypes" options="" >
+				<fk_column name="seatTypeID" pk="id" />
+			</fk>
+		</table>
+		<table name="TrainSeatTypes" spec="" >
+			<column name="id" type="TINYINT" jt="-6" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="seatTypeName" type="CHAR" length="7" jt="1" mandatory="y" />
+			<index name="pk_trainseattypes" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="Transactions" spec="" >
+			<column name="id" type="BIGINT" jt="-5" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="customerID" type="INT" jt="4" mandatory="y" />
+			<column name="paymentMethodID" type="TINYINT" jt="-6" mandatory="y" />
+			<column name="registrationTime" type="TIMESTAMP" jt="93" mandatory="y" />
+			<column name="seatID" type="MEDIUMINT" jt="4" mandatory="y" />
+			<column name="cashierID" type="INT" jt="4" />
+			<column name="addedAt" type="DATE" jt="91" mandatory="y" />
+			<column name="deletedAt" type="DATE" jt="91" />
+			<index name="pk_transactions" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_Transactions Customers" to_schema="public" to_table="Customers" options="" >
+				<fk_column name="customerID" pk="id" />
+			</fk>
+			<fk name="fk_Transactions PaymentMethod" to_schema="public" to_table="PaymentMethod" options="" >
+				<fk_column name="paymentMethodID" pk="id" />
+			</fk>
+			<fk name="fk_Transactions TrainSeatReservation" to_schema="public" to_table="TrainSeatReservation" options="" >
+				<fk_column name="seatID" pk="id" />
+			</fk>
+			<fk name="fk_Transactions Staff" to_schema="public" to_table="Staff" options="" >
+				<fk_column name="cashierID" pk="id" />
+			</fk>
+		</table>
+		<table name="railwayCards" spec="" >
+			<column name="id" type="INT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="railwayCardNumber" type="INT" jt="4" mandatory="y" />
+			<column name="amount" type="FLOAT" jt="7" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="addedAt" type="DATE" jt="91" mandatory="y" />
+			<column name="validUntil" type="DATE" jt="91" mandatory="y" />
+			<column name="modifiedAt" type="DATE" jt="91" />
+			<index name="pk_railwaycards" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_railwaycards_railwaycardnumber" unique="UNIQUE_KEY" >
+				<column name="railwayCardNumber" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Layout" id="Layout-9b7" show_relation="columns" >
+		<entity schema="public" name="Customers" color="BED3F4" x="272" y="48" />
+		<entity schema="public" name="Locations" color="C7F4BE" x="48" y="816" />
+		<entity schema="public" name="PaymentMethod" color="BED3F4" x="64" y="320" />
+		<entity schema="public" name="Staff" color="BED3F4" x="272" y="224" />
+		<entity schema="public" name="Train" color="C7F4BE" x="512" y="800" />
+		<entity schema="public" name="TrainSchedule" color="C7F4BE" x="496" y="528" />
+		<entity schema="public" name="TrainScheduleLocations" color="C7F4BE" x="288" y="752" />
+		<entity schema="public" name="TrainScheduleWagonStaff" color="BED3F4" x="512" y="272" />
+		<entity schema="public" name="TrainSeatReservation" color="C7F4BE" x="160" y="464" />
+		<entity schema="public" name="TrainSeatTypes" color="C7F4BE" x="48" y="704" />
+		<entity schema="public" name="Transactions" color="BED3F4" x="48" y="48" />
+		<entity schema="public" name="railwayCards" color="BED3F4" x="592" y="48" />
+	</layout>
+</project>
